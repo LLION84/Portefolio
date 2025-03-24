@@ -44,7 +44,7 @@ header {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+
   text-align: center;
   width: 100%;
   overflow: hidden; /* Empêche le débordement horizontal */
@@ -66,21 +66,26 @@ header {
 }
 
 .lien-ancre {
+  box-sizing: border-box;
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 20px;
-  margin: 25px;
+  margin: 25px auto;
   background-color: #28211d;
-  width: 100%;
-  overflow: hidden; /* Empêche le débordement horizontal */
-  max-width: 1200px; /* S'assure que le fond ne dépasse pas */
+  overflow: hidden;
+  max-width: 100%;
+  width: 100vw;
+  text-align: center;
 }
 
 .lien-ancre ul {
   list-style: none;
   display: flex;
-  gap: 100px;
+  gap: 70px;
   padding: 0;
   justify-content: center;
-  margin-right: 32px;
   flex-wrap: wrap;
 }
 
