@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <header>
-      <a href="">
+      <div id="top"></div>
+      <a href="#top" class="logo-scroll">
         <img
           src="../image/MonLogo.png"
           alt="Logo du portfolio"
@@ -21,7 +22,7 @@
     </header>
   </div>
   <main>
-    <section class="Presentation" data-aos="fade-up">
+    <section class="Presentation" id="présentation" data-aos="fade-up">
       <h1>Présentation</h1>
       <p><strong>Blaise Zinou</strong></p>
     </section>
@@ -50,7 +51,7 @@
         </ul>
       </section>
     </div>
-    <section class="Project_modals" data-aos="fade-up">
+    <section class="Project_modals" data-aos="fade-up" id="projets">
       <h1>Projet CV</h1>
     </section>
     <div class="project">
@@ -135,7 +136,7 @@
       </button>
     </div>
 
-    <section class="Formulaire_contact">
+    <section class="Formulaire_contact" id="contact" data-aos="fade-up">
       <h2>Me Contacter</h2>
       <form @submit="handleSubmit">
         <input
@@ -168,6 +169,25 @@
       </p>
     </section>
   </main>
+  <footer>
+    <div class="footer-container">
+      <div class="footer-left">
+        <p><small>Copyright 2025</small></p>
+        <p><small>17/04/2025</small></p>
+      </div>
+      <div class="reseaux_sociaux">
+        <a href="https://www.linkedin.com/in/mohamed-blaise-1a33a9307/">
+          <img src="../image/linkedin.png" alt="linkedin" />
+        </a>
+        <a href="https://www.instagram.com/">
+          <img src="../image/instagram.png" alt="instagram" />
+        </a>
+        <a href="https://github.com/">
+          <img src="../image/github.png" alt="github" />
+        </a>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script setup>
@@ -293,6 +313,13 @@ header {
   overflow: hidden; /* Empêche le débordement horizontal */
 }
 
+.logo-scroll {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  width: 50px;
+}
 .profile-img {
   width: 100px;
   height: auto;
@@ -428,24 +455,24 @@ main {
   border-radius: 6px;
 }
 .img_miniature_projets {
-  width: 200px; /* Taille de base de l'image */
+  width: 200px;
   padding: 5px;
-  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition fluide pour l'agrandissement et l'ombre */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
   cursor: pointer;
-  border-radius: 10px; /* Bordure arrondie pour l'image */
-  background-color: #3e3128; /* fond comme Présentation */
-  border: 4px solid #2c221b; /* cadre marron foncé */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* une ombre douce */
+  border-radius: 10px;
+  background-color: #3e3128;
+  border: 4px solid #2c221b;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 .img_miniature_projets:hover {
-  transform: scale(1.1); /* Agrandissement de l'image au survol */
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner de la profondeur */
+  transform: scale(1.1);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 .modal-btn_modal-trigger {
-  background: none; /* Pas de fond pour le bouton */
-  border: none; /* Retirer la bordure par défaut du bouton */
-  padding: 0; /* Enlever tout padding par défaut */
+  background: none;
+  border: none;
+  padding: 0;
 }
 
 .modal-container {
@@ -660,5 +687,42 @@ main {
 }
 img {
   max-width: 500px;
+}
+
+footer {
+  background-color: #b88c67;
+  color: white;
+  padding: 20px;
+  border-top: 3px solid #8c6a4a; /* Bordure haut uniquement */
+}
+
+.footer-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap; /* pour être responsive sur petit écran */
+}
+
+.footer-left {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.reseaux_sociaux {
+  display: flex;
+  gap: 15px;
+}
+
+.reseaux_sociaux img {
+  width: 30px;
+  height: 30px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: grayscale(100%) brightness(0.9);
+}
+
+.reseaux_sociaux img:hover {
+  transform: scale(1.2);
+  filter: grayscale(0%) brightness(1.2);
 }
 </style>
