@@ -1,27 +1,32 @@
 <template>
-  <header>
-    <a href="">
-      <img
-        src="../image/MonLogo.png"
-        alt="Logo du portfolio"
-        class="profile-img"
-      />
-    </a>
-    <nav class="lien-ancre">
-      <ul>
-        <li><a href="#présentation">Présentation</a></li>
-        <li><a href="#projets">Projets</a></li>
-        <li><a href="#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </header>
+  <div id="app">
+    <header>
+      <a href="">
+        <img
+          src="../image/MonLogo.png"
+          alt="Logo du portfolio"
+          class="profile-img"
+        />
+      </a>
+      <nav class="lien-ancre">
+        <ul>
+          <li><a href="#présentation" class="link">Présentation</a></li>
+          <li><a href="#projets" class="link">Projets</a></li>
+          <li><a href="#contact" class="link">Contact</a></li>
+          <li>
+            <a class="link">Autre</a>
+          </li>
+        </ul>
+      </nav>
+    </header>
+  </div>
   <main>
-    <section class="Presentation">
+    <section class="Presentation" data-aos="fade-up">
       <h1>Présentation</h1>
       <p><strong>Blaise Zinou</strong></p>
     </section>
-    <div class="flex-container">
-      <section class="Parcours_objectif">
+    <div class="flex-container" data-aos="fade-up">
+      <section class="Parcours_objectif" data-aos="fade-up">
         <h2>Parcours/objectif</h2>
         <p>
           -Étudiant en développement web depuis un an au C.E.F, passionné
@@ -31,7 +36,7 @@
         </p>
       </section>
 
-      <section class="Skills">
+      <section class="Skills" data-aos="fade-up">
         <h2>Mes Compétences</h2>
         <p>
           J'aime aider les gens à créer leur business en ligne et développer des
@@ -45,22 +50,23 @@
         </ul>
       </section>
     </div>
-    <section class="Project_cv">
+    <section class="Project_modals" data-aos="fade-up">
       <h1>Projet CV</h1>
     </section>
     <div class="project">
       <div class="modal-container">
-        <div class="overlay modal"></div>
+        <div class="overlay_modal-trigger"></div>
+
         <div class="modal">
-          <button class="close-modal">x</button>
-          <h1>Mon Projet CV</h1>
+          <button class="close-modal_modal-trigger">X</button>
           <p>07/03/2024</p>
-          <p>Fais avec : HTML et CSS</p>
+          <h1>Mon Projet CV</h1>
+          <p>Fait avec : HTML et CSS</p>
           <a
             href="../CV/cvhtml.html"
             target="_blank"
             rel="noopener noreferrer"
-            class="cv-button"
+            class="projets-button"
           >
             Consulter mon CV
           </a>
@@ -76,22 +82,182 @@
             />
             GitHub Repository
           </a>
-          <button class="close-modal">x</button>
         </div>
       </div>
-      <button class="img-button">
+      <button class="modal-btn_modal-trigger">
         <img
           src="../image/imgexmpcv.png"
           alt="Miniature"
-          class="img_miniature_cv"
+          class="img_miniature_projets"
         />
       </button>
     </div>
+    <section class="Project_modals" data-aos="fade-up">
+      <h1>Projet Dynamiser un espace commentaire</h1>
+    </section>
+    <div class="project">
+      <div class="modal-container">
+        <div class="overlay_modal-trigger"></div>
+
+        <div class="modal">
+          <button class="close-modal_modal-trigger">X</button>
+          <p>03/08/2024</p>
+          <h1>Mon Projet DynamismeCom</h1>
+          <p>Fait avec : JavaScript</p>
+          <a
+            href="../Dyn.Espc.com/espccom.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="projets-button"
+          >
+            Consulter mon Projet
+          </a>
+          <a
+            href="https://github.com/LLION84/Devoir-c.e.f-ESPACECOMMENTAIRE"
+            class="github-link"
+            target="_blank"
+          >
+            <img
+              src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+              alt="GitHub"
+              class="github-icon"
+            />
+            GitHub Repository
+          </a>
+        </div>
+      </div>
+      <button class="modal-btn_modal-trigger">
+        <img
+          src="../image/IMGESPCOM.png"
+          alt="Miniature"
+          class="img_miniature_projets"
+        />
+      </button>
+    </div>
+
+    <section class="Formulaire_contact">
+      <h2>Me Contacter</h2>
+      <form @submit="handleSubmit">
+        <input
+          v-model="form.name"
+          type="text"
+          name="from_name"
+          placeholder="Ton nom"
+          required
+        />
+        <input
+          v-model="form.email"
+          type="email"
+          name="from_email"
+          placeholder="Ton email"
+          required
+        />
+        <textarea
+          v-model="form.message"
+          name="message"
+          placeholder="Ton message"
+          required
+        ></textarea>
+        <button type="submit">Envoyer</button>
+      </form>
+      <p v-if="isSubmitted" class="confirmation-message">
+        Vous avez bien envoyé votre message. Merci !
+      </p>
+      <p v-if="isError" class="error-message">
+        Il manque des informations. Veuillez remplir tous les champs.
+      </p>
+    </section>
   </main>
 </template>
 
-<script setup></script>
+<script setup>
+import AOS from "aos";
+import "aos/dist/aos.css";
+import emailjs from "emailjs-com";
+import { ref } from "vue";
 
+AOS.init();
+
+const form = ref({
+  name: "",
+  email: "",
+  message: "",
+});
+const isSubmitted = ref(false);
+const isError = ref(false);
+
+emailjs.init("awRQk-37qQq35y9ID");
+
+const handleSubmit = (e) => {
+  e.preventDefault();
+
+  // Vérification des champs
+  if (form.value.name && form.value.email && form.value.message) {
+    isSubmitted.value = true;
+    isError.value = false;
+
+    form.value.name = "";
+    form.value.email = "";
+    form.value.message = "";
+
+    emailjs
+      .sendForm(
+        "service_jlpnhej",
+        "template_sop9x8i",
+        e.target,
+        "awRQk-37qQq35y9ID"
+      )
+      .then(
+        (result) => {
+          console.log("Email envoyé avec succès : ", result.text);
+        },
+        (error) => {
+          console.log("Erreur lors de l'envoi : ", error.text);
+        }
+      );
+
+    // Faire disparaître le message de confirmation après 3 secondes
+    setTimeout(() => {
+      isSubmitted.value = false;
+    }, 3000);
+  } else {
+    isError.value = true;
+    isSubmitted.value = false;
+  }
+};
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Sélectionne tous les boutons et containers
+  const modalBtns = document.querySelectorAll(".modal-btn_modal-trigger");
+  const modalContainers = document.querySelectorAll(".modal-container");
+  const closeButtons = document.querySelectorAll(".close-modal_modal-trigger");
+
+  // Associe chaque bouton à son container (par ordre)
+  modalBtns.forEach((btn, index) => {
+    const modalContainer = modalContainers[index];
+    const closeBtn = closeButtons[index];
+
+    btn.addEventListener("click", () => {
+      modalContainer.style.display = "flex";
+    });
+
+    closeBtn.addEventListener("click", () => {
+      modalContainer.style.display = "none";
+    });
+
+    modalContainer.addEventListener("click", (event) => {
+      if (!event.target.closest(".modal")) {
+        modalContainer.style.display = "none";
+      }
+    });
+  });
+});
+AOS.init({
+  duration: 1000, // Durée de l'animation
+  easing: "ease-out", // L'animation commence lentement puis accélère
+  once: true, // L'animation se fait une seule fois lors du défilement
+});
+</script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap");
@@ -166,7 +332,7 @@ header {
   flex-wrap: wrap;
 }
 
-.lien-ancre a {
+.lien-ancre .link {
   text-decoration: none;
   color: #f2e1ca;
   background-color: #ad7f58;
@@ -181,7 +347,7 @@ header {
   line-height: 50px; /* Centre le texte verticalement */
 }
 
-.lien-ancre a:hover {
+.lien-ancre .link:hover {
   background-color: #4d3c2f;
   box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2); /* Ombre plus prononcée au survol */
   transform: scale(1.05);
@@ -254,63 +420,144 @@ main {
     flex-direction: column;
   }
 }
-.Project_cv {
+.Project_modals {
   text-align: center;
   width: 100%;
   background-color: #3e3128;
   color: #f2e1ca;
   border-radius: 6px;
 }
-.img_miniature_cv {
+.img_miniature_projets {
   width: 200px; /* Taille de base de l'image */
   padding: 5px;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transition fluide pour l'agrandissement et l'ombre */
   cursor: pointer;
   border-radius: 10px; /* Bordure arrondie pour l'image */
+  background-color: #3e3128; /* fond comme Présentation */
+  border: 4px solid #2c221b; /* cadre marron foncé */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* une ombre douce */
 }
 
-.img_miniature_cv:hover {
+.img_miniature_projets:hover {
   transform: scale(1.1); /* Agrandissement de l'image au survol */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre portée pour donner de la profondeur */
 }
-.img-button {
+.modal-btn_modal-trigger {
   background: none; /* Pas de fond pour le bouton */
   border: none; /* Retirer la bordure par défaut du bouton */
   padding: 0; /* Enlever tout padding par défaut */
-  cursor: pointer; /* Change le curseur pour indiquer que c'est cliquable */
 }
-.cv-button {
-  padding: 12px 24px;
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none; /* Masqué par défaut */
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7); /* Fond sombre avec opacité */
+  z-index: 9999;
+}
+
+.modal-container.active {
+  display: flex; /* Affiche le modal lorsqu'il a la classe active */
+}
+.overlay_modal-trigger {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Fond sombre */
+  z-index: 1;
+}
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+  background-color: #f2e1ca;
+  border-radius: 10px;
+  width: 80%;
+  max-width: 600px;
+  box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 2;
+}
+.close-modal_modal-trigger {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  padding: 10px 15px;
+  background-color: #e63946;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+}
+.close-modal_modal-trigger:hover {
+  background-color: #d32f2f;
+}
+.modal h1 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.modal p {
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 10px 0;
+  color: #555;
+}
+
+.projets-button,
+.github-link {
+  display: inline-flex; /* Utiliser flex pour centrer le texte */
+  justify-content: center; /* Centrer horizontalement */
+  align-items: center; /* Centrer verticalement */
+  padding: 6px 12px;
+  border-radius: 8px; /* Forme arrondie pour les deux boutons */
+  text-align: center;
+  margin-top: 15px; /* Espacement entre les boutons */
+  transition: all 0.3s ease;
+  min-width: 180px; /* Taille minimale uniforme */
+  height: 50px; /* Hauteur uniforme */
+  font-size: 16px;
+}
+
+/* Bouton CV */
+.projets-button {
   background-color: #ad7f58;
   color: #ffffff;
   text-decoration: none;
   font-weight: 600;
-  font-size: 16px;
-  border-radius: 8px;
   border: 2px solid #ffbe87;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
 }
 
-.cv-button:hover {
-  background-color: #ad7f58;
+.projets-button:hover {
   background-color: #4d3c2f;
   box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);
   transform: scale(1.05);
 }
+
+/* Lien GitHub */
 .github-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
   background-color: #24292e;
   color: #ffffff;
   text-decoration: none;
   font-weight: bold;
-  border-radius: 6px;
+  display: flex;
+  align-items: center; /* Centrer l'icône et le texte */
+  justify-content: center; /* Centrer l'icône et le texte */
   box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1);
-  font-size: 14px;
-  transition: background-color 0.3s, transform 0.3s;
 }
 
 .github-link:hover {
@@ -318,6 +565,7 @@ main {
   transform: translateY(-1px);
 }
 
+/* Icône GitHub */
 .github-icon {
   width: 20px;
   height: 20px;
@@ -325,5 +573,92 @@ main {
   padding: 2px;
   background-color: #ffffff;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  margin-left: 8px; /* Espacement entre l'icône et le texte */
+}
+.Formulaire_contact {
+  width: 100%;
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 25px;
+  background-color: #3e3128;
+  border-radius: 12px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+  color: #f2e1ca;
+}
+.Formulaire_contact h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #fbbb8a;
+}
+.Formulaire_contact form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.Formulaire_contact input,
+.Formulaire_contact textarea {
+  background-color: #28211d;
+  border: 2px solid #ad7f58;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 16px;
+  color: #f2e1ca;
+  font-family: "Roboto", sans-serif;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.Formulaire_contact input:focus,
+.Formulaire_contact textarea:focus {
+  border-color: #ffbe87;
+  box-shadow: 0 0 8px #ffbe87a8;
+  outline: none;
+}
+.Formulaire_contact textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+.Formulaire_contact button[type="submit"] {
+  background-color: #ad7f58;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  font-family: "Poppins", sans-serif;
+}
+.Formulaire_contact button[type="submit"]:hover {
+  background-color: #4d3c2f;
+  transform: scale(1.03);
+}
+.confirmation-message {
+  color: #4caf50;
+  font-weight: bold;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  visibility: hidden;
+}
+
+.confirmation-message.show {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+}
+
+.error-message {
+  color: #e63946;
+  font-weight: bold;
+  text-align: center;
+}
+.not-found {
+  text-align: center;
+  padding: 50px;
+}
+img {
+  max-width: 500px;
 }
 </style>
